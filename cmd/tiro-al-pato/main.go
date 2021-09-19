@@ -4,6 +4,8 @@ import (
 	"log"
 	"math/rand"
 	"time"
+
+	tiropato "github.com/guilledipa/juego"
 )
 
 func main() {
