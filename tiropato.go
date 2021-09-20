@@ -1,6 +1,9 @@
 package tiropato
 
 import (
+	"log"
+
+	"github.com/guilledipa/juego/objects"
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
@@ -9,13 +12,20 @@ const (
 	windowHeight = 600
 )
 
-type Game struct{}
+type Game struct {
+	objects []objects.Object
+}
 
 func (g *Game) Update() error {
 	return nil
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
+	for _, o := range g.objects {
+		if err := o.Draw(screen); err != nil {
+			log.Fatalf("Draw(): %v", err)
+		}
+	}
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
@@ -29,6 +39,11 @@ func (g *Game) Run() error {
 func NewGame() *Game {
 	ebiten.SetWindowSize(windowWidth, windowHeight)
 	ebiten.SetWindowTitle("Tiro al Pato!")
-	g := &Game{}
+	g := &Game{
+		objects: []objects.Object{
+			objects.NewBackground("bg_green"),
+			objects.NewDesk("bg_wood"),
+		},
+	}
 	return g
 }
