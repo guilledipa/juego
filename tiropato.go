@@ -41,10 +41,9 @@ func NewGame() *Game {
 	ebiten.SetWindowTitle("Tiro al Pato!")
 	g := &Game{
 		objects: []objects.Object{
-			objects.NewBackground("bg_green"),
-			objects.NewDesk("bg_wood"),
-			objects.NewCurtains("curtains"),
-			objects.NewCurtainStraight("curtain_straight"),
+			objects.NewBackground("bg_green.png"),
+			objects.NewDesk("bg_wood.png"),
+			objects.NewCurtains("curtains.png", "curtain_straight.png"),
 		},
 	}
 	return g
