@@ -43,6 +43,8 @@ func NewGame() *Game {
 		objects: []objects.Object{
 			objects.NewBackground("bg_green"),
 			objects.NewDesk("bg_wood"),
+			objects.NewCurtains("curtains"),
+			objects.NewCurtainStraight("curtain_straight"),
 		},
 	}
 	return g
