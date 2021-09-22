@@ -13,10 +13,8 @@ func GetImage(name string, obj *assets.Object) (*ebiten.Image, error) {
 	for _, img := range obj.Specs.Images {
 		if img.Name == name {
 			rect = image.Rect(img.X, img.Y, img.X+img.W, img.Y+img.H)
-			break
-		} else {
-			return nil, fmt.Errorf("GetImage(\"%s\": Unable to find image in Spec", name)
+			return obj.Image.SubImage(rect).(*ebiten.Image), nil
 		}
 	}
-	return obj.Image.SubImage(rect).(*ebiten.Image), nil
+	return nil, fmt.Errorf("GetImage(\"%s\"): Unable to find image in Spec", name)
 }

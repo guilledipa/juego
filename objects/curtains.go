@@ -1,39 +1,51 @@
 package objects
 
 import (
-	"bytes"
-	"image"
 	_ "image/png"
-	"log"
+	"math"
 
 	"github.com/guilledipa/juego/assets"
+	"github.com/guilledipa/juego/utils"
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
 type curtains struct {
-	name string
+	top     string
+	lateral string
 }
 
-func (d *curtains) Draw(target *ebiten.Image) error {
-	img, format, err := image.Decode(bytes.NewReader(assets.AssetBytes(d.name)))
-	if err != nil {
-		log.Printf("curtainsDraw(\"%s\"): %s", d.name, format)
-		return err
-	}
-	curtainsImg := ebiten.NewImageFromImage(img)
-
+func (c *curtains) Draw(target *ebiten.Image) error {
 	targetWidth, _ := target.Size()
 
+	// Lateral
+	latImg, err := utils.GetImage(c.lateral, assets.Stall)
+	if err != nil {
+		return err
+	}
 	op := &ebiten.DrawImageOptions{}
-	target.DrawImage(curtainsImg, op)
+	target.DrawImage(latImg, op)
 	op.GeoM.Scale(-1, 1)
 	op.GeoM.Translate(float64(targetWidth), float64(0))
-	target.DrawImage(curtainsImg, op)
+	target.DrawImage(latImg, op)
+
+	// Top
+	topImg, err := utils.GetImage(c.top, assets.Stall)
+	if err != nil {
+		return err
+	}
+	topImgW, _ := topImg.Size()
+	xTopInstances := int(math.Ceil(float64(targetWidth) / float64(topImgW)))
+	for i := 0; i < xTopInstances; i++ {
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Translate(float64(i*topImgW), float64(0))
+		target.DrawImage(topImg, op)
+	}
 	return nil
 }
 
-func NewCurtains(img string) Object {
+func NewCurtains(lateral, top string) Object {
 	return &curtains{
-		name: img,
+		top:     top,
+		lateral: lateral,
 	}
 }
